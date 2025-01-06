@@ -1,6 +1,9 @@
+import { useSelector } from "react-redux";
 
 
 const TodoList = () => {
+    const todo = useSelector((state) => state.todo);
+    console.log(todo);
 
     return (
         <div className="flex h-screen flex-col items-center justify-center  space-y-4">
@@ -18,10 +21,22 @@ const TodoList = () => {
 
             <div>
                 <ul className="w-full max-w-md">
-                    <li  className={`flex justify-start items-center px-4 py-2 border-b space-x-4 `}>
-                        <span  >todo text</span>
-                        <button  className="text-red-500 hover:underline">Remove</button>
-                    </li>
+                    {
+                        todo.length > 0 ? todo.map((todo)=>{
+                            return (
+                                <li key={todo.id} className="border-b border-gray-200 px-4 py-2 text-gray-600">
+                                    {todo.title}
+                                    <button className="ml-2 text-sm text-red-500 hover:text-red-600" >
+                                        Delete
+                                    </button>
+                                </li>
+                            )
+                        })
+                            
+                        : <>
+                        <h1>data not found</h1>
+                        </>
+                    }
                 </ul>
             </div>
         </div>
