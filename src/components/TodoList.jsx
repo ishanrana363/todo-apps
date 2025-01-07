@@ -1,9 +1,19 @@
-import { useSelector } from "react-redux";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addTodo } from "../redux/features/todo/todoSlice";
 
 
 const TodoList = () => {
+    const [data,setData] = useState('')
     const todo = useSelector((state) => state.todo);
     console.log(todo);
+    const dispatch = useDispatch()
+    const addTodoData = () => {
+        if(data.trim() !== ''){
+            dispatch(addTodo(data))
+            setData('')
+        }
+    };
 
     return (
         <div className="flex h-screen flex-col items-center justify-center  space-y-4">
@@ -11,10 +21,12 @@ const TodoList = () => {
             <div className="flex space-x-2">
                 <input
                     type="text"
+                    value={data}
                     placeholder="Add a todo"
+                    onChange={(e)=>{setData(e.target.value)}}
                     className="px-4 py-2 border border-gray-300 rounded text-black placeholder:text-black"
                 />
-                <button className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+                <button onClick={addTodoData} className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
                     Add
                 </button>
             </div>
