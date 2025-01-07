@@ -3,7 +3,7 @@ import Preferences from './components/Preferences';
 
 const App = () => {
   return (
-    <div>
+    <div className='  dark:bg-gray-800 dark:text-white bg-gray-100 text-gray-900' >
       <TodoList></TodoList>
       <Preferences></Preferences>
     </div>
