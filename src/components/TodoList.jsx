@@ -1,19 +1,27 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addTodo } from "../redux/features/todo/todoSlice";
+import { addTodo, deleteTodo, toggleTodo } from "../redux/features/todo/todoSlice";
 
 
 const TodoList = () => {
-    const [data,setData] = useState('')
+    const [data, setData] = useState('')
     const todo = useSelector((state) => state.todo);
     console.log(todo);
     const dispatch = useDispatch()
     const addTodoData = () => {
-        if(data.trim() !== ''){
+        if (data.trim() !== '') {
             dispatch(addTodo(data))
             setData('')
         }
     };
+
+    const removeTodoData = (id) => {
+        dispatch(deleteTodo(id))
+    };
+
+    const toggleTodoData = (id)=>{
+        dispatch(toggleTodo(id))
+    }
 
     return (
         <div className="flex h-screen flex-col items-center justify-center  space-y-4">
@@ -23,9 +31,10 @@ const TodoList = () => {
                     type="text"
                     value={data}
                     placeholder="Add a todo"
-                    onChange={(e)=>{setData(e.target.value)}}
+                    onChange={(e) => { setData(e.target.value) }}
                     className="px-4 py-2 border border-gray-300 rounded text-black placeholder:text-black"
                 />
+
                 <button onClick={addTodoData} className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
                     Add
                 </button>
@@ -34,20 +43,20 @@ const TodoList = () => {
             <div>
                 <ul className="w-full max-w-md">
                     {
-                        todo.length > 0 ? todo.map((todo)=>{
+                        todo.length > 0 ? todo.map((todo) => {
                             return (
                                 <li key={todo.id} className="border-b border-gray-200 px-4 py-2 text-gray-600">
-                                    {todo.title}
-                                    <button className="ml-2 text-sm text-red-500 hover:text-red-600" >
+                                    <span onClick={()=>{toggleTodoData(todo.id)}}    className={`${todo.completed ? 'line-through text-gray-500' : ''} cursor-pointer `}>{todo.title}</span>
+                                    <button onClick={()=>removeTodoData(todo.id)} className="ml-2 text-sm text-red-500 hover:text-red-600" >
                                         Delete
                                     </button>
                                 </li>
                             )
                         })
-                            
-                        : <>
-                        <h1>data not found</h1>
-                        </>
+
+                            : <>
+                                <h1>data not found</h1>
+                            </>
                     }
                 </ul>
             </div>
